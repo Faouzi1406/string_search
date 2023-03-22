@@ -50,10 +50,6 @@ impl<'a> Search for KeyWord<'a> {
             let mut buf: String = String::new();
             open_file.read_to_string(&mut buf)?;
 
-            if word.len() == 0 {
-                break;
-            }
-
             for letter in buf.as_bytes() {
                 if cursor == word.len() {
                     cursor = 0;
