@@ -50,25 +50,27 @@ impl<'a> Search for KeyWord<'a> {
             let mut buf: String = String::new();
             open_file.read_to_string(&mut buf)?;
 
-            for letter in buf.as_bytes() {
-                if cursor == word.len() {
-                    cursor = 0;
-                }
+            if word.len() > 0  {
+                for letter in buf.as_bytes() {
+                    if cursor == word.len() {
+                        cursor = 0;
+                    }
 
-                let current = word[cursor];
+                    let current = word[cursor];
 
-                if current == *letter {
-                    matching_chars += 1;
-                    cursor += 1;
-                } else {
-                    matching_chars = 0;
-                    cursor = 0;
-                }
+                    if current == *letter {
+                        matching_chars += 1;
+                        cursor += 1;
+                    } else {
+                        matching_chars = 0;
+                        cursor = 0;
+                    }
 
-                if matching_chars == word.len() {
-                    found.word = self.word;
-                    found.infiles.push(file.to_string());
-                    break;
+                    if matching_chars == word.len() {
+                        found.word = self.word;
+                        found.infiles.push(file.to_string());
+                        break;
+                    }
                 }
             }
         }
