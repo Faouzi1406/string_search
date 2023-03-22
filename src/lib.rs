@@ -12,19 +12,28 @@ pub struct KeyWord<'a> {
 #[derive(Debug)]
 pub struct Found<'a> {
     pub word: &'a str,
-    pub infiles: Vec<&'a str>,
+    pub infiles: Vec<String>,
 }
 
 pub trait Search {
     fn search_word(&self) -> Result<Found>;
 }
 
+impl<'a> Default for  KeyWord<'a> {
+    fn default() -> Self {
+        Self { word: "", files: Vec::new() }
+    }
+}
+
+impl<'a> Default for  Found<'a> {
+    fn default() -> Self {
+        Self { word: "", infiles: Vec::new() }
+    }
+}
+
 impl<'a> Search for KeyWord<'a> {
     fn search_word(&self) -> Result<Found> {
-        let mut found: Found = Found {
-            word: "",
-            infiles: Vec::new(),
-        };
+        let mut found: Found = Found::default();
 
         for file in &self.files {
             let mut matching_chars = 0;
@@ -52,7 +61,7 @@ impl<'a> Search for KeyWord<'a> {
 
                 if matching_chars == word.len() {
                     found.word = self.word;
-                    found.infiles.push(file);
+                    found.infiles.push(file.to_string());
                     break;
                 }
             }
