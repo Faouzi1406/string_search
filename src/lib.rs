@@ -6,7 +6,7 @@ use std::{fs::OpenOptions, io::Read};
 
 pub struct KeyWord<'a> {
     pub word: &'a str,
-    pub files: Vec<&'a str>,
+    pub files: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -83,7 +83,7 @@ mod tests {
     fn match_words() {
         let key = KeyWord {
             word: "cool",
-            files: vec!["test_words.txt"],
+            files: vec!["test_words.txt".to_string()],
         };
         let search = key.search_word();
 
@@ -94,7 +94,7 @@ mod tests {
     fn bench_search(b: &mut Bencher) -> impl Termination  {
         let key = KeyWord {
             word: "ZZZ",
-            files: vec!["test_words.txt"],
+            files: vec!["test_words.txt".to_string()],
         };
         b.iter(|| key.search_word())
     }
