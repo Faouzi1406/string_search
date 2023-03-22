@@ -19,15 +19,21 @@ pub trait Search {
     fn search_word(&self) -> Result<Found>;
 }
 
-impl<'a> Default for  KeyWord<'a> {
+impl<'a> Default for KeyWord<'a> {
     fn default() -> Self {
-        Self { word: "", files: Vec::new() }
+        Self {
+            word: "",
+            files: Vec::new(),
+        }
     }
 }
 
-impl<'a> Default for  Found<'a> {
+impl<'a> Default for Found<'a> {
     fn default() -> Self {
-        Self { word: "", infiles: Vec::new() }
+        Self {
+            word: "",
+            infiles: Vec::new(),
+        }
     }
 }
 
@@ -43,6 +49,10 @@ impl<'a> Search for KeyWord<'a> {
             let mut open_file = OpenOptions::new().read(true).open(file)?;
             let mut buf: String = String::new();
             open_file.read_to_string(&mut buf)?;
+
+            if word.len() == 0 {
+                break;
+            }
 
             for letter in buf.as_bytes() {
                 if cursor == word.len() {
@@ -91,7 +101,7 @@ mod tests {
     }
 
     #[bench]
-    fn bench_search(b: &mut Bencher) -> impl Termination  {
+    fn bench_search(b: &mut Bencher) -> impl Termination {
         let key = KeyWord {
             word: "ZZZ",
             files: vec!["test_words.txt".to_string()],
